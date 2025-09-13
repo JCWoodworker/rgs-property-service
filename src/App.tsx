@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import {
@@ -60,6 +61,7 @@ const navUnderlineBase =
 	"relative px-1 py-0.5 transition text-foreground/70 hover:text-foreground after:absolute after:left-0 after:right-0 after:-bottom-1 after:h-0.5 after:bg-primary after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100"
 
 function Layout({ children }: { children: React.ReactNode }) {
+	const [menuOpen, setMenuOpen] = useState(false)
 	return (
 		<div className="min-h-dvh flex flex-col">
 			<header className="sticky top-0 z-40 bg-white/80 backdrop-blur border-b">
@@ -119,7 +121,7 @@ function Layout({ children }: { children: React.ReactNode }) {
 						</NavigationMenu>
 					</div>
 					<div className="md:hidden">
-						<Sheet>
+						<Sheet open={menuOpen} onOpenChange={setMenuOpen}>
 							<SheetTrigger asChild>
 								<Button variant="outline" size="sm">
 									Menu
@@ -130,11 +132,21 @@ function Layout({ children }: { children: React.ReactNode }) {
 									<SheetTitle>Menu</SheetTitle>
 								</SheetHeader>
 								<nav className="mt-4 grid gap-3 text-sm">
-									<a href="#home">Home</a>
-									<a href="#services">Services</a>
-									<a href="#reviews">Reviews</a>
-									<a href="#about">About</a>
-									<a href="#contact">Contact</a>
+									<a href="#home" onClick={() => setMenuOpen(false)}>
+										Home
+									</a>
+									<a href="#services" onClick={() => setMenuOpen(false)}>
+										Services
+									</a>
+									<a href="#reviews" onClick={() => setMenuOpen(false)}>
+										Reviews
+									</a>
+									<a href="#about" onClick={() => setMenuOpen(false)}>
+										About
+									</a>
+									<a href="#contact" onClick={() => setMenuOpen(false)}>
+										Contact
+									</a>
 								</nav>
 							</SheetContent>
 						</Sheet>
