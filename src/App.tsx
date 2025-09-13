@@ -30,6 +30,10 @@ import {
 const BRAND_RED = "#ea4651"
 const BRAND_BLUE = "#35469a"
 const BRAND_YELLOW = "#ede01e"
+// Subtle tints
+const TINT_BLUE = "rgba(53, 70, 154, 0.04)"
+const TINT_RED = "rgba(234, 70, 81, 0.05)"
+const TINT_YELLOW = "rgba(237, 224, 30, 0.08)"
 
 function serviceStyleFor(id?: string): React.CSSProperties {
 	switch (id) {
@@ -142,6 +146,14 @@ function Layout({ children }: { children: React.ReactNode }) {
 						</a>
 					</Button>
 				</div>
+				{/* Subtle brand gradient bar */}
+				<div
+					className="h-px w-full"
+					style={{
+						background: `linear-gradient(90deg, ${BRAND_RED}, ${BRAND_BLUE}, ${BRAND_YELLOW})`,
+						opacity: 0.5,
+					}}
+				/>
 			</header>
 			<main className="flex-1">{children}</main>
 			<footer className="border-t">
@@ -181,13 +193,14 @@ function HomePage() {
 						<div className="mt-5 flex gap-3">
 							<a
 								href="tel:+17742802315"
-								className="inline-flex items-center rounded-md bg-white text-black px-4 py-2 text-sm font-medium"
+								className="inline-flex items-center rounded-md text-white px-4 py-2 text-sm font-medium hover:opacity-90"
+								style={{ backgroundColor: BRAND_RED }}
 							>
 								Call for a Free Estimate
 							</a>
 							<a
 								href="mailto:Paintguy62@gmail.com"
-								className="inline-flex items-center rounded-md border border-white/60 text-white px-4 py-2 text-sm font-medium"
+								className="inline-flex items-center rounded-md border text-white px-4 py-2 text-sm font-medium border-white/60 hover:bg-white/10"
 							>
 								Email Us
 							</a>
@@ -196,7 +209,11 @@ function HomePage() {
 				</div>
 			</section>
 
-			<section id="services" className="py-16">
+			<section
+				id="services"
+				className="py-16"
+				style={{ backgroundColor: TINT_BLUE }}
+			>
 				<div className="mx-auto max-w-6xl px-4">
 					<h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
 						Our Services
@@ -231,7 +248,11 @@ function HomePage() {
 				</div>
 			</section>
 
-			<section id="about" className="py-16">
+			<section
+				id="about"
+				className="py-16"
+				style={{ backgroundColor: TINT_YELLOW }}
+			>
 				<div className="mx-auto max-w-6xl px-4">
 					<h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
 						About Us
@@ -254,15 +275,18 @@ function HomePage() {
 							label="Phone"
 							value="(774) 280-2315"
 							href="tel:+17742802315"
+							tint={TINT_BLUE}
 						/>
 						<ContactCard
 							label="Email"
 							value="Paintguy62@gmail.com"
 							href="mailto:Paintguy62@gmail.com"
+							tint={TINT_RED}
 						/>
 						<ContactCard
 							label="Address"
 							value="222 N.Main Street, Whitinsville, MA, United States, Massachusetts"
+							tint={TINT_YELLOW}
 						/>
 					</div>
 				</div>
@@ -339,16 +363,22 @@ function ContactCard({
 	label,
 	value,
 	href,
+	tint,
 }: {
 	label: string
 	value: string
 	href?: string
+	tint?: string
 }) {
+	const style: React.CSSProperties | undefined = tint
+		? { borderColor: tint }
+		: undefined
 	if (href) {
 		return (
 			<a
 				className="rounded-lg border p-5 bg-card text-card-foreground"
 				href={href}
+				style={style}
 			>
 				<div className="text-sm font-semibold">{label}</div>
 				<div className="mt-1 text-foreground/80">{value}</div>
@@ -356,7 +386,10 @@ function ContactCard({
 		)
 	}
 	return (
-		<div className="rounded-lg border p-5 bg-card text-card-foreground">
+		<div
+			className="rounded-lg border p-5 bg-card text-card-foreground"
+			style={style}
+		>
 			<div className="text-sm font-semibold">{label}</div>
 			<div className="mt-1 text-foreground/80">{value}</div>
 		</div>
