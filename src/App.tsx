@@ -1,64 +1,123 @@
-import { Route, Routes, Link, Outlet, NavLink } from "react-router-dom"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
+import {
+	PaintRoller,
+	Hammer,
+	Boxes,
+	Layers,
+	Droplets,
+	Wrench,
+	Phone,
+} from "lucide-react"
+import { services } from "@/data/services"
+import { testimonials } from "@/data/testimonials"
+import { Button } from "@/components/ui/button"
+import {
+	NavigationMenu,
+	NavigationMenuItem,
+	NavigationMenuLink,
+	NavigationMenuList,
+} from "@/components/ui/navigation-menu"
+import {
+	Sheet,
+	SheetContent,
+	SheetHeader,
+	SheetTitle,
+	SheetTrigger,
+} from "@/components/ui/sheet"
 
-function Layout() {
+const navUnderlineBase =
+	"relative px-1 py-0.5 transition text-foreground/70 hover:text-foreground after:absolute after:left-0 after:right-0 after:-bottom-1 after:h-0.5 after:bg-primary after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100"
+
+function Layout({ children }: { children: React.ReactNode }) {
 	return (
 		<div className="min-h-dvh flex flex-col">
 			<header className="sticky top-0 z-40 bg-white/80 backdrop-blur border-b">
-				<div className="mx-auto max-w-6xl px-4 h-14 flex items-center justify-between">
-					<Link to="/" className="font-semibold tracking-tight">
-						RGS Property Services
-					</Link>
-					<nav className="hidden md:flex gap-6 text-sm">
-						<NavLink
-							to="/"
-							className={({ isActive }) =>
-								isActive
-									? "font-medium"
-									: "text-foreground/70 hover:text-foreground"
-							}
-						>
-							Home
-						</NavLink>
-						<a
-							href="#services"
-							className="text-foreground/70 hover:text-foreground"
-						>
-							Overview
-						</a>
-						<NavLink
-							to="/services"
-							className={({ isActive }) =>
-								isActive
-									? "font-medium"
-									: "text-foreground/70 hover:text-foreground"
-							}
-						>
-							Services
-						</NavLink>
-						<a
-							href="#reviews"
-							className="text-foreground/70 hover:text-foreground"
-						>
-							Reviews
-						</a>
-						<a
-							href="#contact"
-							className="text-foreground/70 hover:text-foreground"
-						>
-							Contact
-						</a>
-					</nav>
+				<div className="mx-auto max-w-6xl px-4 h-16 flex items-center justify-between">
 					<a
-						href="tel:+17742802315"
-						className="inline-flex items-center text-sm font-medium rounded-md px-3 py-1.5 bg-primary text-primary-foreground hover:opacity-90"
+						href="#home"
+						className="flex items-center gap-2"
+						aria-label="RGS Property Services"
 					>
-						Call (774) 280-2315
+						<img
+							src="/RGS_Web_Logo_230X50 (1).svg"
+							alt="RGS Property Services"
+							className="h-6 sm:h-8 w-auto"
+						/>
 					</a>
+					<div className="hidden md:block">
+						<NavigationMenu>
+							<NavigationMenuList className="gap-7">
+								<NavigationMenuItem>
+									<NavigationMenuLink href="#home" className={navUnderlineBase}>
+										Home
+									</NavigationMenuLink>
+								</NavigationMenuItem>
+								<NavigationMenuItem>
+									<NavigationMenuLink
+										href="#services"
+										className={navUnderlineBase}
+									>
+										Services
+									</NavigationMenuLink>
+								</NavigationMenuItem>
+								<NavigationMenuItem>
+									<NavigationMenuLink
+										href="#reviews"
+										className={navUnderlineBase}
+									>
+										Reviews
+									</NavigationMenuLink>
+								</NavigationMenuItem>
+								<NavigationMenuItem>
+									<NavigationMenuLink
+										href="#about"
+										className={navUnderlineBase}
+									>
+										About
+									</NavigationMenuLink>
+								</NavigationMenuItem>
+								<NavigationMenuItem>
+									<NavigationMenuLink
+										href="#contact"
+										className={navUnderlineBase}
+									>
+										Contact
+									</NavigationMenuLink>
+								</NavigationMenuItem>
+							</NavigationMenuList>
+						</NavigationMenu>
+					</div>
+					<div className="md:hidden">
+						<Sheet>
+							<SheetTrigger asChild>
+								<Button variant="outline" size="sm">
+									Menu
+								</Button>
+							</SheetTrigger>
+							<SheetContent side="right">
+								<SheetHeader>
+									<SheetTitle>Menu</SheetTitle>
+								</SheetHeader>
+								<nav className="mt-4 grid gap-3 text-sm">
+									<a href="#home">Home</a>
+									<a href="#services">Services</a>
+									<a href="#reviews">Reviews</a>
+									<a href="#about">About</a>
+									<a href="#contact">Contact</a>
+								</nav>
+							</SheetContent>
+						</Sheet>
+					</div>
+					<Button asChild size="sm" className="hidden md:inline-flex">
+						<a href="tel:+17742802315">
+							<Phone className="mr-2 h-4 w-4" />
+							Call (774) 280-2315
+						</a>
+					</Button>
 				</div>
 			</header>
-			<main className="flex-1">
-				<Outlet />
-			</main>
+			<main className="flex-1">{children}</main>
 			<footer className="border-t">
 				<div className="mx-auto max-w-6xl px-4 py-8 text-sm text-foreground/70">
 					<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -121,38 +180,14 @@ function HomePage() {
 						cabinetry, flooring, power washing, and general contracting.
 					</p>
 					<div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-						<ServiceCard
-							title="Interior & Exterior Painting"
-							description="From prep to final coat, crisp lines and durable finishes throughout your home."
-						/>
-						<ServiceCard
-							title="Home Remodeling"
-							description="Kitchens, baths, basements, and more—organized, clean, and on schedule."
-						/>
-						<ServiceCard
-							title="Cabinetry & Refinishing"
-							description="Refresh cabinets with professional refinishing and hardware updates."
-						/>
-						<ServiceCard
-							title="Flooring Installation"
-							description="Laminate and tile installs with tight seams and clean transitions."
-						/>
-						<ServiceCard
-							title="Decking"
-							description="Repairs, staining, and new deck builds built to last."
-						/>
-						<ServiceCard
-							title="Power Washing"
-							description="Safely remove dirt and mildew to restore curb appeal."
-						/>
-					</div>
-					<div className="mt-8">
-						<NavLink
-							to="/services"
-							className="text-sm font-medium underline underline-offset-4"
-						>
-							View all services
-						</NavLink>
+						{services.slice(0, 6).map((s) => (
+							<ServiceCard
+								key={s.id}
+								title={s.name}
+								description={s.blurb}
+								iconId={s.id}
+							/>
+						))}
 					</div>
 				</div>
 			</section>
@@ -163,23 +198,23 @@ function HomePage() {
 						Testimonials
 					</h2>
 					<div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-10">
-						<Testimonial
-							quote="Seth and his team at R. Gonynor and Sons have completed two projects for us, a full color change on the exterior of our home and then wallpaper removal and paint of the interior. Seth was extremely responsive and came out both times and provided us with a free quote which was reasonable and affordable! We could not be happier with the work they did on our home. Seth and his crew are knowledgeable, trustworthy, friendly and professional. I highly recommend R. Gonynor and Sons for their excellent service and top notch quality."
-							author="Nicole"
-						/>
-						<Testimonial
-							quote="Highly recommend R.Gonynor and Sons for your next project. They just completed repainting the interior of my house, replacing plumbing fixtures, light fixtures, staining the deck and other maintenance items. They were so pleasant to work with from the estimate through the end of the job. Everyone on the crew did excellent work and always cleaned up at the end of the day. Well priced and professional! Thank you Seth and crew. I would not hesitate to use them again."
-							author="Shannon G"
-						/>
-						<Testimonial
-							quote="Gonynor and Sons just finished painting the exterior of our old (and quirky) house. They did an amazing job! The team that worked on our house was very responsive to our questions and checked in with us frequently throughout the process. Highly recommend and would use them again."
-							author="Allice K"
-						/>
-						<Testimonial
-							quote="We just had Seth and his team work on our kitchen cabinets. Matt and Steve were excellent workers who were professional, concise, and courteous. They worked long hours to ensure that our project would be completed in a timely manner. Seth did an excellent job on the doors and they look INCREDIBLE. We are happy with the work that was done and I look forward to using R Gonynor and Sons in the future."
-							author="Julie Ann"
-						/>
+						{testimonials.map((t, i) => (
+							<Testimonial key={i} quote={t.quote} author={t.author} />
+						))}
 					</div>
+				</div>
+			</section>
+
+			<section id="about" className="py-16">
+				<div className="mx-auto max-w-6xl px-4">
+					<h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
+						About Us
+					</h2>
+					<p className="mt-2 text-foreground/70 max-w-3xl">
+						Family-owned since 1984, serving Central Massachusetts with
+						professional painting, remodeling, and general contracting. Reliable
+						crews, clean jobsites, and clear communication.
+					</p>
 				</div>
 			</section>
 
@@ -210,88 +245,64 @@ function HomePage() {
 	)
 }
 
-function ServicesPage() {
-	return (
-		<section className="py-16">
-			<div className="mx-auto max-w-6xl px-4">
-				<h1 className="text-3xl md:text-4xl font-semibold tracking-tight">
-					Our Services
-				</h1>
-				<p className="mt-3 text-foreground/70 max-w-2xl">
-					From clean, crisp painting to full-room remodels, we help homeowners
-					improve and protect their homes with reliable scheduling and
-					respectful crews.
-				</p>
-				<div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-					<ServiceCard
-						title="Interior & Exterior Painting"
-						description="Crisp lines, durable finishes, expert prep."
-					/>
-					<ServiceCard
-						title="Home Remodeling"
-						description="Kitchens, baths, basements—organized and on schedule."
-					/>
-					<ServiceCard
-						title="Cabinetry & Refinishing"
-						description="Painted or refinished cabinetry with updated hardware."
-					/>
-					<ServiceCard
-						title="Flooring Installation"
-						description="Laminate and tile installs with tight seams."
-					/>
-					<ServiceCard
-						title="Decking"
-						description="Repairs, staining, and new builds."
-					/>
-					<ServiceCard
-						title="Power Washing"
-						description="Refresh siding, decks, and walkways."
-					/>
-					<ServiceCard
-						title="General Contracting"
-						description="Small projects and punch lists handled professionally."
-					/>
-				</div>
-				<div className="mt-10 flex gap-3">
-					<a
-						href="tel:+17742802315"
-						className="inline-flex items-center rounded-md bg-primary text-primary-foreground px-4 py-2 text-sm font-medium"
-					>
-						Call for a Free Estimate
-					</a>
-					<a
-						href="mailto:Paintguy62@gmail.com"
-						className="inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium"
-					>
-						Email Us
-					</a>
-				</div>
-			</div>
-		</section>
-	)
+// service icon and cards (unchanged from previous block)
+function ServiceIcon({ id }: { id: string }) {
+	const size = 18
+	switch (id) {
+		case "painting":
+			return <PaintRoller size={size} />
+		case "remodeling":
+			return <Hammer size={size} />
+		case "cabinetry":
+			return <Boxes size={size} />
+		case "flooring":
+			return <Layers size={size} />
+		case "decking":
+			return <Hammer size={size} />
+		case "power-washing":
+			return <Droplets size={size} />
+		default:
+			return <Wrench size={size} />
+	}
 }
 
 function ServiceCard({
 	title,
 	description,
+	iconId,
 }: {
 	title: string
 	description: string
+	iconId?: string
 }) {
 	return (
-		<div className="rounded-lg border p-5 bg-card text-card-foreground">
-			<h3 className="text-lg font-semibold tracking-tight">{title}</h3>
-			<p className="mt-2 text-sm text-foreground/70">{description}</p>
-		</div>
+		<Card className="group hover:shadow-sm hover:border-foreground/20 transition">
+			<CardHeader className="flex flex-row items-center gap-3">
+				{iconId ? (
+					<span className="inline-grid place-items-center h-9 w-9 rounded-md bg-primary/10 text-primary group-hover:bg-primary/15 transition">
+						<ServiceIcon id={iconId} />
+					</span>
+				) : null}
+				<CardTitle className="text-base">{title}</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<p className="text-sm text-foreground/70">{description}</p>
+			</CardContent>
+		</Card>
 	)
 }
 
 function Testimonial({ quote, author }: { quote: string; author: string }) {
 	return (
-		<figure className="rounded-lg border bg-card text-card-foreground p-6">
-			<blockquote className="text-[15px] leading-relaxed">“{quote}”</blockquote>
-			<figcaption className="mt-4 font-medium">— {author}</figcaption>
-		</figure>
+		<Card>
+			<CardContent className="p-6">
+				<blockquote className="text-[15px] leading-relaxed">
+					“{quote}”
+				</blockquote>
+				<Separator className="my-4" />
+				<div className="font-medium">— {author}</div>
+			</CardContent>
+		</Card>
 	)
 }
 
@@ -304,25 +315,29 @@ function ContactCard({
 	value: string
 	href?: string
 }) {
-	const Comp = href ? "a" : "div"
+	if (href) {
+		return (
+			<a
+				className="rounded-lg border p-5 bg-card text-card-foreground"
+				href={href}
+			>
+				<div className="text-sm font-semibold">{label}</div>
+				<div className="mt-1 text-foreground/80">{value}</div>
+			</a>
+		)
+	}
 	return (
-		<Comp
-			className="rounded-lg border p-5 bg-card text-card-foreground"
-			href={href}
-		>
+		<div className="rounded-lg border p-5 bg-card text-card-foreground">
 			<div className="text-sm font-semibold">{label}</div>
 			<div className="mt-1 text-foreground/80">{value}</div>
-		</Comp>
+		</div>
 	)
 }
 
 export default function App() {
 	return (
-		<Routes>
-			<Route element={<Layout />}>
-				<Route index element={<HomePage />} />
-				<Route path="/services" element={<ServicesPage />} />
-			</Route>
-		</Routes>
+		<Layout>
+			<HomePage />
+		</Layout>
 	)
 }
