@@ -26,6 +26,32 @@ import {
 	SheetTrigger,
 } from "@/components/ui/sheet"
 
+// Brand colors taken from the logo
+const BRAND_RED = "#ea4651"
+const BRAND_BLUE = "#35469a"
+const BRAND_YELLOW = "#ede01e"
+
+function serviceStyleFor(id?: string): React.CSSProperties {
+	switch (id) {
+		case "painting":
+			return { backgroundColor: BRAND_RED, color: "#fff" }
+		case "remodeling":
+			return { backgroundColor: BRAND_BLUE, color: "#fff" }
+		case "cabinetry":
+			return { backgroundColor: BRAND_YELLOW, color: "#000" }
+		case "flooring":
+			return { backgroundColor: BRAND_BLUE, color: "#fff" }
+		case "decking":
+			return { backgroundColor: BRAND_RED, color: "#fff" }
+		case "power-washing":
+			return { backgroundColor: BRAND_BLUE, color: "#fff" }
+		case "general-contracting":
+			return { backgroundColor: BRAND_YELLOW, color: "#000" }
+		default:
+			return { backgroundColor: BRAND_BLUE, color: "#fff" }
+	}
+}
+
 const navUnderlineBase =
 	"relative px-1 py-0.5 transition text-foreground/70 hover:text-foreground after:absolute after:left-0 after:right-0 after:-bottom-1 after:h-0.5 after:bg-primary after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100"
 
@@ -245,7 +271,6 @@ function HomePage() {
 	)
 }
 
-// service icon and cards (unchanged from previous block)
 function ServiceIcon({ id }: { id: string }) {
 	const size = 18
 	switch (id) {
@@ -275,11 +300,15 @@ function ServiceCard({
 	description: string
 	iconId?: string
 }) {
+	const style = serviceStyleFor(iconId)
 	return (
 		<Card className="group hover:shadow-sm hover:border-foreground/20 transition">
 			<CardHeader className="flex flex-row items-center gap-3">
 				{iconId ? (
-					<span className="inline-grid place-items-center h-9 w-9 rounded-md bg-primary/10 text-primary group-hover:bg-primary/15 transition">
+					<span
+						className={`inline-grid place-items-center h-9 w-9 rounded-md transition`}
+						style={style}
+					>
 						<ServiceIcon id={iconId} />
 					</span>
 				) : null}
