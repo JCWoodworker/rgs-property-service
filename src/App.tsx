@@ -26,6 +26,7 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "@/components/ui/sheet"
+import ContactDialog from "@/features/contact/ContactDialog"
 
 // Brand colors taken from the logo
 const BRAND_RED = "#ea4651"
@@ -62,6 +63,7 @@ const navUnderlineBase =
 
 function Layout({ children }: { children: React.ReactNode }) {
 	const [menuOpen, setMenuOpen] = useState(false)
+	const [contactOpen, setContactOpen] = useState(false)
 	return (
 		<div className="min-h-dvh flex flex-col">
 			<header className="sticky top-0 z-40 bg-white/80 backdrop-blur border-b">
@@ -151,12 +153,21 @@ function Layout({ children }: { children: React.ReactNode }) {
 							</SheetContent>
 						</Sheet>
 					</div>
-					<Button asChild size="sm" className="hidden md:inline-flex">
-						<a href="tel:+17742802315">
-							<Phone className="mr-2 h-4 w-4" />
-							Call (774) 280-2315
-						</a>
-					</Button>
+					<div className="hidden md:flex items-center gap-2">
+						<Button asChild size="sm">
+							<a href="tel:+17742802315">
+								<Phone className="mr-2 h-4 w-4" />
+								Call (774) 280-2315
+							</a>
+						</Button>
+						<Button
+							size="sm"
+							variant="outline"
+							onClick={() => setContactOpen(true)}
+						>
+							Free Estimate
+						</Button>
+					</div>
 				</div>
 				{/* Subtle brand gradient bar */}
 				<div
@@ -168,6 +179,7 @@ function Layout({ children }: { children: React.ReactNode }) {
 				/>
 			</header>
 			<main className="flex-1">{children}</main>
+			<ContactDialog open={contactOpen} onOpenChange={setContactOpen} />
 			<footer className="border-t">
 				<div className="mx-auto max-w-6xl px-4 py-8 text-sm text-foreground/70">
 					<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -184,6 +196,7 @@ function Layout({ children }: { children: React.ReactNode }) {
 }
 
 function HomePage() {
+	const [heroDialogOpen, setHeroDialogOpen] = useState(false)
 	return (
 		<>
 			<section id="home" className="relative isolate">
@@ -210,16 +223,19 @@ function HomePage() {
 							>
 								Call for a Free Estimate
 							</a>
-							<a
-								href="mailto:Paintguy62@gmail.com"
+							<button
+								type="button"
 								className="inline-flex items-center rounded-md border text-white px-4 py-2 text-sm font-medium border-white/60 hover:bg-white/10"
+								onClick={() => setHeroDialogOpen(true)}
 							>
 								Email Us
-							</a>
+							</button>
 						</div>
 					</div>
 				</div>
 			</section>
+
+			<ContactDialog open={heroDialogOpen} onOpenChange={setHeroDialogOpen} />
 
 			<section
 				id="services"
@@ -385,7 +401,8 @@ function ContactCard({
 	const style: React.CSSProperties | undefined = tint
 		? { borderColor: tint }
 		: undefined
-	if (href) {
+	const [open, setOpen] = useState(false)
+	if (href && label !== "Email") {
 		return (
 			<a
 				className="rounded-lg border p-5 bg-card text-card-foreground"
@@ -399,11 +416,18 @@ function ContactCard({
 	}
 	return (
 		<div
-			className="rounded-lg border p-5 bg-card text-card-foreground"
+			className="rounded-lg border p-5 bg-card text-card-foreground cursor-pointer"
 			style={style}
+			role="button"
+			tabIndex={0}
+			onClick={() => setOpen(true)}
+			onKeyDown={(e) => {
+				if (e.key === "Enter" || e.key === " ") setOpen(true)
+			}}
 		>
 			<div className="text-sm font-semibold">{label}</div>
 			<div className="mt-1 text-foreground/80">{value}</div>
+			<ContactDialog open={open} onOpenChange={setOpen} />
 		</div>
 	)
 }
