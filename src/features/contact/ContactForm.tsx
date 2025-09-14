@@ -1,4 +1,5 @@
 import { useForm, ValidationError } from "@formspree/react"
+import { useEffect } from "react"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -10,7 +11,8 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select"
-import { Loader2, CheckCircle2 } from "lucide-react"
+import { Loader2 } from "lucide-react"
+import { toast } from "sonner"
 
 type ContactFormProps = {
 	onClose?: () => void
@@ -18,24 +20,16 @@ type ContactFormProps = {
 
 const ContactForm = ({ onClose }: ContactFormProps) => {
 	const [state, handleSubmit] = useForm("mgvlbwqb")
-	if (state.succeeded) {
-		return (
-			<div className="grid gap-4">
-				<div className="inline-flex items-center gap-2 text-green-600">
-					<CheckCircle2 className="h-5 w-5" />
-					<span className="font-medium">Request received</span>
-				</div>
-				<p className="text-sm text-foreground/80">
-					Thanks! We'll get back to you shortly.
-				</p>
-				<div>
-					<Button type="button" onClick={onClose}>
-						Close
-					</Button>
-				</div>
-			</div>
-		)
-	}
+
+	useEffect(() => {
+		if (state.succeeded) {
+			toast.success("Request sent", {
+				description: "Thanks! We'll get back to you shortly.",
+			})
+			onClose?.()
+		}
+	}, [state.succeeded, onClose])
+
 	return (
 		<form
 			onSubmit={handleSubmit}

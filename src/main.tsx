@@ -4,11 +4,13 @@ import "./index.css"
 import "@radix-ui/themes/styles.css"
 import { Theme } from "@radix-ui/themes"
 import App from "./App.tsx"
+import { Toaster } from "@/components/ui/sonner"
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
 		<Theme>
 			<App />
+			<Toaster richColors closeButton />
 		</Theme>
 	</StrictMode>
 )
