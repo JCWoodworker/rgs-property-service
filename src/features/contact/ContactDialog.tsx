@@ -22,7 +22,7 @@ const ContactDialog = ({ open, onOpenChange }: ContactDialogProps) => {
 						Tell us a bit about your project and how to reach you.
 					</DialogDescription>
 				</DialogHeader>
-				<ContactForm />
+				<ContactForm onClose={() => onOpenChange(false)} />
 			</DialogContent>
 		</Dialog>
 	)
