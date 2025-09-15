@@ -19,7 +19,7 @@ import {
 import ContactDialog from "@/features/contact/ContactDialog"
 import TestimonialSection from "./features/testimonials/TestimonialSection"
 import AboutSection from "./features/about/AboutSection"
-import { BRAND_RED, BRAND_BLUE, BRAND_YELLOW, TINT_BLUE, TINT_RED, TINT_YELLOW } from "@/constants/theme"
+import { BRAND_RED, BRAND_BLUE, BRAND_YELLOW } from "@/constants/theme"
 import ServicesSection from "./features/services/ServicesSection"
 import ContactCard from "./features/contact/ContactCard"
 
@@ -218,18 +218,14 @@ function HomePage() {
 							label="Phone"
 							value="(774) 280-2315"
 							href="tel:+17742802315"
-							tint={TINT_BLUE}
 						/>
 						<ContactCard
 							label="Email"
 							value="Paintguy62@gmail.com"
-							href="mailto:Paintguy62@gmail.com"
-							tint={TINT_RED}
 						/>
 						<ContactCard
 							label="Address"
 							value="222 N.Main Street, Whitinsville, MA, United States, Massachusetts"
-							tint={TINT_YELLOW}
 						/>
 					</div>
 				</div>
