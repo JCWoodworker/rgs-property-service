@@ -1,5 +1,5 @@
 import { useForm, ValidationError } from "@formspree/react"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -20,9 +20,11 @@ type ContactFormProps = {
 
 const ContactForm = ({ onClose }: ContactFormProps) => {
 	const [state, handleSubmit] = useForm("mgvlbwqb")
+	const hasToasted = useRef(false)
 
 	useEffect(() => {
-		if (state.succeeded) {
+		if (state.succeeded && !hasToasted.current) {
+			hasToasted.current = true
 			toast.success("Request sent", {
 				description: "Thanks! We'll get back to you shortly.",
 			})

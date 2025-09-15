@@ -4,8 +4,10 @@ import {
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
+	DialogClose,
 } from "@/components/ui/dialog"
 import ContactForm from "@/features/contact/ContactForm"
+import { Button } from "@/components/ui/button"
 
 type ContactDialogProps = {
 	open: boolean
@@ -23,6 +25,13 @@ const ContactDialog = ({ open, onOpenChange }: ContactDialogProps) => {
 					</DialogDescription>
 				</DialogHeader>
 				<ContactForm onClose={() => onOpenChange(false)} />
+				<div className="flex justify-end">
+					<DialogClose asChild>
+						<Button type="button" variant="outline">
+							Close
+						</Button>
+					</DialogClose>
+				</div>
 			</DialogContent>
 		</Dialog>
 	)
