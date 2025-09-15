@@ -1,17 +1,7 @@
 import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
 import {
-	PaintRoller,
-	Hammer,
-	Boxes,
-	Layers,
-	Droplets,
-	Wrench,
 	Phone,
 } from "lucide-react"
-import { services } from "@/data/services"
-import { testimonials } from "@/data/testimonials"
 import { Button } from "@/components/ui/button"
 import {
 	NavigationMenu,
@@ -27,36 +17,11 @@ import {
 	SheetTrigger,
 } from "@/components/ui/sheet"
 import ContactDialog from "@/features/contact/ContactDialog"
-
-// Brand colors taken from the logo
-const BRAND_RED = "#ea4651"
-const BRAND_BLUE = "#35469a"
-const BRAND_YELLOW = "#ede01e"
-// Subtle tints
-const TINT_BLUE = "rgba(53, 70, 154, 0.04)"
-const TINT_RED = "rgba(234, 70, 81, 0.05)"
-const TINT_YELLOW = "rgba(237, 224, 30, 0.08)"
-
-function serviceStyleFor(id?: string): React.CSSProperties {
-	switch (id) {
-		case "painting":
-			return { backgroundColor: BRAND_RED, color: "#fff" }
-		case "remodeling":
-			return { backgroundColor: BRAND_BLUE, color: "#fff" }
-		case "cabinetry":
-			return { backgroundColor: BRAND_YELLOW, color: "#000" }
-		case "flooring":
-			return { backgroundColor: BRAND_BLUE, color: "#fff" }
-		case "decking":
-			return { backgroundColor: BRAND_RED, color: "#fff" }
-		case "power-washing":
-			return { backgroundColor: BRAND_BLUE, color: "#fff" }
-		case "general-contracting":
-			return { backgroundColor: BRAND_YELLOW, color: "#000" }
-		default:
-			return { backgroundColor: BRAND_BLUE, color: "#fff" }
-	}
-}
+import TestimonialSection from "./features/testimonials/TestimonialSection"
+import AboutSection from "./features/about/AboutSection"
+import { BRAND_RED, BRAND_BLUE, BRAND_YELLOW, TINT_BLUE, TINT_RED, TINT_YELLOW } from "@/constants/theme"
+import ServicesSection from "./features/services/ServicesSection"
+import ContactCard from "./features/contact/ContactCard"
 
 const navUnderlineBase =
 	"relative px-1 py-0.5 transition text-foreground/70 hover:text-foreground after:absolute after:left-0 after:right-0 after:-bottom-1 after:h-0.5 after:bg-primary after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100"
@@ -237,61 +202,11 @@ function HomePage() {
 
 			<ContactDialog open={heroDialogOpen} onOpenChange={setHeroDialogOpen} />
 
-			<section
-				id="services"
-				className="py-16"
-				style={{ backgroundColor: TINT_BLUE }}
-			>
-				<div className="mx-auto max-w-6xl px-4">
-					<h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
-						Our Services
-					</h2>
-					<p className="mt-2 text-foreground/70">
-						Painting and remodeling are our specialty. We also handle decking,
-						cabinetry, flooring, power washing, and general contracting.
-					</p>
-					<div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-						{services.slice(0, 6).map((s) => (
-							<ServiceCard
-								key={s.id}
-								title={s.name}
-								description={s.blurb}
-								iconId={s.id}
-							/>
-						))}
-					</div>
-				</div>
-			</section>
+			<ServicesSection />
+			
+			<TestimonialSection />
 
-			<section id="reviews" className="py-16 bg-secondary">
-				<div className="mx-auto max-w-6xl px-4">
-					<h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
-						Testimonials
-					</h2>
-					<div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-10">
-						{testimonials.map((t, i) => (
-							<Testimonial key={i} quote={t.quote} author={t.author} />
-						))}
-					</div>
-				</div>
-			</section>
-
-			<section
-				id="about"
-				className="py-16"
-				style={{ backgroundColor: TINT_YELLOW }}
-			>
-				<div className="mx-auto max-w-6xl px-4">
-					<h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
-						About Us
-					</h2>
-					<p className="mt-2 text-foreground/70 max-w-3xl">
-						Family-owned since 1984, serving Central Massachusetts with
-						professional painting, remodeling, and general contracting. Reliable
-						crews, clean jobsites, and clear communication.
-					</p>
-				</div>
-			</section>
+			<AboutSection />
 
 			<section id="contact" className="py-16">
 				<div className="mx-auto max-w-6xl px-4 grid gap-8">
@@ -320,115 +235,6 @@ function HomePage() {
 				</div>
 			</section>
 		</>
-	)
-}
-
-function ServiceIcon({ id }: { id: string }) {
-	const size = 18
-	switch (id) {
-		case "painting":
-			return <PaintRoller size={size} />
-		case "remodeling":
-			return <Hammer size={size} />
-		case "cabinetry":
-			return <Boxes size={size} />
-		case "flooring":
-			return <Layers size={size} />
-		case "decking":
-			return <Hammer size={size} />
-		case "power-washing":
-			return <Droplets size={size} />
-		default:
-			return <Wrench size={size} />
-	}
-}
-
-function ServiceCard({
-	title,
-	description,
-	iconId,
-}: {
-	title: string
-	description: string
-	iconId?: string
-}) {
-	const style = serviceStyleFor(iconId)
-	return (
-		<Card className="group hover:shadow-sm hover:border-foreground/20 transition">
-			<CardHeader className="flex flex-row items-center gap-3">
-				{iconId ? (
-					<span
-						className={`inline-grid place-items-center h-9 w-9 rounded-md transition`}
-						style={style}
-					>
-						<ServiceIcon id={iconId} />
-					</span>
-				) : null}
-				<CardTitle className="text-base">{title}</CardTitle>
-			</CardHeader>
-			<CardContent>
-				<p className="text-sm text-foreground/70">{description}</p>
-			</CardContent>
-		</Card>
-	)
-}
-
-function Testimonial({ quote, author }: { quote: string; author: string }) {
-	return (
-		<Card>
-			<CardContent className="p-6">
-				<blockquote className="text-[15px] leading-relaxed">
-					“{quote}”
-				</blockquote>
-				<Separator className="my-4" />
-				<div className="font-medium">— {author}</div>
-			</CardContent>
-		</Card>
-	)
-}
-
-function ContactCard({
-	label,
-	value,
-	href,
-	tint,
-}: {
-	label: string
-	value: string
-	href?: string
-	tint?: string
-}) {
-	const style: React.CSSProperties | undefined = tint
-		? { borderColor: tint }
-		: undefined
-	const [open, setOpen] = useState(false)
-	if (href && label !== "Email") {
-		return (
-			<a
-				className="rounded-lg border p-5 bg-card text-card-foreground"
-				href={href}
-				style={style}
-			>
-				<div className="text-sm font-semibold">{label}</div>
-				<div className="mt-1 text-foreground/80">{value}</div>
-			</a>
-		)
-	}
-	return (
-		<div
-			className="rounded-lg border p-5 bg-card text-card-foreground cursor-pointer"
-			style={style}
-			role="button"
-			tabIndex={0}
-			onClick={() => setOpen(true)}
-			onKeyDown={(e) => {
-				if (e.key === "Enter" || e.key === " ") setOpen(true)
-			}}
-		>
-			<div className="text-sm font-semibold">{label}</div>
-			<div className="mt-1 text-foreground/80">{value}</div>
-			<ContactDialog open={open} onOpenChange={setOpen} />
-		</div>
 	)
 }
 
